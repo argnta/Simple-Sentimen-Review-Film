@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LogisticRegression
 import pickle
 
 df = pd.read_csv('IMDBDataset.csv')
@@ -32,7 +33,7 @@ test_tfidf = vectorizer.transform(test_df['review'])
 sentiment_train = train_df['sentiment']
 sentiment_test = test_df['sentiment']
 
-test_model = MultinomialNB()
+test_model = LogisticRegression(max_iter=1000)
 test_model.fit(train_tfidf, sentiment_train)
 
 sentiment_prediction = test_model.predict(test_tfidf)
