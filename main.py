@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
+import pickle
 
 df = pd.read_csv('IMDBDataset.csv')
 
@@ -35,3 +36,9 @@ test_model.fit(train_tfidf, sentiment_train)
 sentiment_prediction = test_model.predict(test_tfidf)
 accuracy = accuracy_score(sentiment_test, sentiment_prediction)
 print(f"Accuracy: {accuracy * 100:.2f}%\n")
+
+with open('model_sentimen.pkl', 'wb') as f:
+    pickle.dump(test_model, f)
+
+with open('vectorizer.pkl', 'wb') as f:
+    pickle.dump(vectorizer, f)
