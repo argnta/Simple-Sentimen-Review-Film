@@ -18,12 +18,14 @@ stemmer = SnowballStemmer('english')
 df['review'] = df['review'].str.replace(r'<br\s*/?>', '', regex=True)
 df['review'] = df['review'].str.replace(f'[{all_punctuation}]', '', regex=True)
 df['review'] = df['review'].str.lower()
+df['review'] = df['review'].str.replace(r'\b10\b', 'ratingten', regex=True)
+df['review'] = df['review'].str.replace(r'\b100\b', 'ratinghundred', regex=True)
 df['review'] = df['review'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
 df['review'] = df['review'].apply(lambda x: ' '.join([stemmer.stem(y) for y in x.split()]))
 
 train_df, test_df = train_test_split(df, test_size=0.25, random_state=42, shuffle=True, stratify=df['sentiment'])
 
-vectorizer = TfidfVectorizer()
+vectorizer = TfidfVectorizer(ngram_range=(1, 2), token_pattern=r'(?u)\b\w+\b')
 train_tfidf = vectorizer.fit_transform(train_df['review'])
 test_tfidf = vectorizer.transform(test_df['review'])
 
