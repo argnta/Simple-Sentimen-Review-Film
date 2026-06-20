@@ -5,6 +5,7 @@ from nltk.stem.snowball import SnowballStemmer
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
 
 df = pd.read_csv('IMDBDataset.csv')
 
@@ -17,19 +18,20 @@ df['review'] = df['review'].str.replace(r'<br\s*/?>', '', regex=True)
 df['review'] = df['review'].str.replace(f'[{all_punctuation}]', '', regex=True)
 df['review'] = df['review'].str.lower()
 df['review'] = df['review'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
-df['review'] = df['review'].apply(lambda x: [stemmer.stem(y) for y in x.split()])
 df['review'] = df['review'].apply(lambda x: ' '.join([stemmer.stem(y) for y in x.split()]))
 
 train_df, test_df = train_test_split(df, test_size=0.25, random_state=42, shuffle=True, stratify=df['sentiment'])
 
 vectorizer = TfidfVectorizer()
 train_tfidf = vectorizer.fit_transform(train_df['review'])
-test_tfidf = vectorizer.fit_transform(test_df['review'])
+test_tfidf = vectorizer.transform(test_df['review'])
 
 sentiment_train = train_df['sentiment']
 sentiment_test = test_df['sentiment']
 
 test_model = MultinomialNB()
-test_model.fit(train_df, sentiment_train)
+test_model.fit(train_tfidf, sentiment_train)
 
-print(df.head())
+sentiment_prediction = test_model.predict(test_tfidf)
+accuracy = accuracy_score(sentiment_test, sentiment_prediction)
+print(f"Accuracy: {accuracy * 100:.2f}%\n")
