@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
 df = pd.read_csv('IMDBDataset.csv')
 
@@ -28,5 +29,7 @@ test_tfidf = vectorizer.fit_transform(test_df['review'])
 sentiment_train = train_df['sentiment']
 sentiment_test = test_df['sentiment']
 
+test_model = MultinomialNB()
+test_model.fit(train_df, sentiment_train)
 
 print(df.head())
