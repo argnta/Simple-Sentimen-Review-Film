@@ -41,7 +41,7 @@ Pastikan Anda sudah menginstal **Python 3.8+** di sistem Anda.
 ### 2. Kloning Repositori
 
 ```bash
-git clone [https://github.com/username/simple-sentiment-review.git](https://github.com/username/simple-sentiment-review.git)
+git clone [https://github.com/argnta/Simple-Sentimen-Review-Film](https://github.com/argnta/Simple-Sentimen-Review-Film)
 cd simple-sentiment-review
 
 ```
